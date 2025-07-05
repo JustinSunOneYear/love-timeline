@@ -162,7 +162,58 @@ body {
     transform: scale(1.02);
     background-color: #ffe6f0;
 }
-</style><script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script></head>
+</style><script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script><style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fff0f5;
+      background-image: url("Lovebackground.avif");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+    .balloon {
+      position: absolute;
+      width: 60px;
+      height: 80px;
+      background-color: pink;
+      border-radius: 50% 50% 50% 50%;
+      animation: floatUp 10s linear infinite;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    .popped-image {
+      position: absolute;
+      max-width: 180px;
+      border-radius: 15px;
+      z-index: 1000;
+      opacity: 1;
+      transition: opacity 2s ease-out;
+    }
+    @keyframes floatUp {
+      from {
+        bottom: -100px;
+      }
+      to {
+        bottom: 120%;
+      }
+    }
+    #regenerateButton {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 10px 15px;
+      font-size: 16px;
+      background-color: deeppink;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 1001;
+    }
+  </style></head>
 <body>
 <div id="overlay">
 <h2>💌 Enter the passphrase to view our story</h2>
@@ -411,8 +462,10 @@ body {
   </button>
 </div>
 <div id="love-note" style="display: none; text-align: center; margin: 30px auto; max-width: 600px; font-size: 18px; background: #fff0f5; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-<p>My dearest love,</p>
-<p>I made this whole site to show you how much I cherish every single moment with you. You make my world brighter, warmer, and happier every day. Thank you for being you. I love you so much.</p>
+<p>My dearest baby,</p>
+<p>This website was made with all the love I have for you and to show you how much I cherish every single moment with you. Every picture, every memory, and every moment is a reflection of the joy and beauty you've brought into my life. I hope this little journey through our love story makes you smile, laugh, and maybe even tear up a bit (just a little!). I love you more than words can ever express. You make my world brighter, warmer, and happier every day. Thank you for being you. I love you so much Joanna.</p>
+<p>We have successfully reached the milestone of 1 year! Happy anniversary my love, I know that it's been a crazy adventure with you in the past year, but this is only the start of our adventure together. I am confident that we will be on each other's side to the end of time, as nothing is able to separate the ever living bond that love have brought us together with.</p>
+<p>Remember to come to me if anything ever makes you sad, I will always be here for you, and I will always choose you over anyone, anything. I love you with all my heart, and may you live a long and healthy life (with me of course!).</p>
 <p>Forever yours,</p>
 <p><strong>Justin 💖</strong></p>
 <button onclick="document.getElementById('love-note').style.display='none'; document.getElementById('letter-block').querySelector('button').style.display='inline-block';" style="margin-top: 15px; padding: 6px 14px; font-size: 14px; background-color: #f06292; color: white; border: none; border-radius: 6px; cursor: pointer;">
@@ -578,5 +631,63 @@ function resetBalloons() {
 document.addEventListener("DOMContentLoaded", () => {
   startBalloons();
 });
-</script><button id="resetBalloonsBtn" onclick="resetBalloons()" style="position:fixed; bottom:20px; right:20px; display:none; z-index:9999; padding:10px 15px; font-size:16px; border:none; border-radius:10px; background:#ff4d6d; color:white; cursor:pointer;">🎈 Balloon Pictures</button></body>
+</script><button id="resetBalloonsBtn" onclick="resetBalloons()" style="position:fixed; bottom:20px; right:20px; display:none; z-index:9999; padding:10px 15px; font-size:16px; border:none; border-radius:10px; background:#ff4d6d; color:white; cursor:pointer;">🎈 Balloon Pictures</button><button id="regenerateButton" onclick="resetBalloons()">Balloon Pictures</button><script>
+    const balloonImages = [
+      "./62069a10c6d72e93068bcebecab033a8.JPG",
+      "./deb908339ec1a2398d49884c92216164.JPG",
+      "./ff560102de2b3674d352debd9ea165f4.JPG",
+      "./2f7d82cc05a23bb73c9ff8e46ac3f530.JPG",
+      "./b8a67927355000bd6dac0621d8403d22.JPG",
+      "./ab7080d284d59986bf2fa8d9a897143f.JPG",
+      "./1dca740fc497318d0cce32b23d998c6d.JPG",
+      "./4e6ede1763a5befc2d1c57334ed723b6.JPG",
+      "./9b000077635ca7f087c4c81258a4a6c7.JPG",
+      "./IMG_6435.JPG",
+      "./IMG_6617.JPG"
+    ];
+
+    let shownImages = [];
+
+    function spawnBalloon() {
+      if (shownImages.length === balloonImages.length) {
+        document.getElementById('regenerateButton').style.display = 'block';
+        return;
+      }
+
+      if (document.querySelectorAll('.balloon').length >= 3) return;
+
+      const balloon = document.createElement('div');
+      balloon.className = 'balloon';
+
+      balloon.style.left = Math.random() < 0.5 ? `${Math.random() * 20}px` : `${window.innerWidth - 60 - Math.random() * 20}px`;
+      balloon.style.bottom = '-100px';
+
+      document.body.appendChild(balloon);
+
+      balloon.addEventListener('click', () => {
+        const available = balloonImages.filter(img => !shownImages.includes(img));
+        const img = available[Math.floor(Math.random() * available.length)];
+        shownImages.push(img);
+
+        const image = document.createElement('img');
+        image.src = img;
+        image.className = 'popped-image';
+        image.style.left = balloon.style.left;
+        image.style.bottom = balloon.style.bottom;
+
+        document.body.appendChild(image);
+        setTimeout(() => image.style.opacity = 0, 2500);
+        setTimeout(() => image.remove(), 4500);
+
+        balloon.remove();
+      });
+    }
+
+    function resetBalloons() {
+      shownImages = [];
+      document.getElementById('regenerateButton').style.display = 'none';
+    }
+
+    setInterval(spawnBalloon, 2000);
+  </script></body>
 </html>
