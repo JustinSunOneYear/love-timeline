@@ -82,7 +82,17 @@
       cursor: pointer;
     }
   </style>
-</head>
+<style>
+.event {
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    border-radius: 10px;
+    padding: 10px;
+}
+.event:hover {
+    transform: scale(1.02);
+    background-color: #ffe6f0;
+}
+</style></head>
 <body>
 <div id="overlay">
 <h2>💌 Enter the passphrase to view our story</h2>
@@ -258,7 +268,7 @@
 <h2>Labubu Addiction Starts!</h2>
 <p>After our first exhausting exam session, we met up at Angrignon Mall for the first time on our Christmas date and I finally gave you a Labubu! Looks like you liked it a lot~ And that was the start of a huge incoming addiction :0</p>
 <img alt="Labubu facetime" src="IMG_4250.PNG" style="max-width: 400px; height: auto; margin-top: 10px; margin-bottom: 10px;"/>
-</div>
+</div><div class="event"><time>January 8, 2025</time><h2>Baby's Birthday</h2><img src="f201a7987d2e4af34127b1bd738df0c9.JPG" style="width: 100%; max-width: 400px; margin-top: 10px; border-radius: 12px;"/><p>Today was my princess’ 18th birthday! We did DIY scented bears together…</p></div><div class="event"><time>January 9, 2025</time><h2>Showing off her Labubus</h2><img src="IMG_4447.PNG" style="width: 100%; max-width: 400px; margin-top: 10px; border-radius: 12px;"/><p>We went to so many places, we checked so many websites…</p></div><div class="event"><time>January 22, 2025</time><h2>Study and Sleeping Sessions</h2><p>I love seeing my baby girl patiently waiting for me in the morning at the Dark room…</p></div><div class="event"><time>January 28, 2025</time><h2>Cute Date Selfies</h2><img src="IMG_4622.HEIC" style="width: 100%; max-width: 400px; margin-top: 10px; border-radius: 12px;"/><p>Even if you don’t show your face :) Hey your little eye still looks so cute…</p></div><div class="event"><time>January 29, 2025</time><h2>Peak Addiction!</h2><img src="IMG_4635.jpg" style="width: 100%; max-width: 400px; margin-top: 10px; border-radius: 12px;"/><p>HAHAHA JUST LOOK AT ALL THE KEYCHAINS YOU GOT!!!</p></div><div class="event"><time>February 15, 2025</time><h2>Valentine's Date</h2><p>We went on a cute date that day and look at the pretty pictures…</p></div><div class="event"><time>February 16, 2025</time><h2>Love Heart~</h2><img src="IMG_4776.PNG" style="width: 100%; max-width: 400px; margin-top: 10px; border-radius: 12px;"/><p>Cute heart that we should do again hehe</p></div>
 <div class="event">
 <time>February 26th, 2025</time>
 <h2>Drawing in an empty classroom</h2>
@@ -325,6 +335,20 @@
 <img alt="VR and Escape Room Hangout" src="20b9e75b28239c3372c8dcec31877bdb.JPG" style="max-width: 400px; height: auto; margin-top: 10px; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto; border-radius: 8px;"/>
 </div>
 </main>
+<div id="letter-block" style="text-align: center; margin-top: 40px;">
+<button onclick="document.getElementById('love-note').style.display='block'; this.style.display='none';" style="font-size: 18px; padding: 10px 20px; background-color: #ff7eb9; border: none; border-radius: 8px; color: white; cursor: pointer;">
+    💌 Read My Letter
+  </button>
+</div>
+<div id="love-note" style="display: none; text-align: center; margin: 30px auto; max-width: 600px; font-size: 18px; background: #fff0f5; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+<p>My dearest love,</p>
+<p>I made this whole site to show you how much I cherish every single moment with you. You make my world brighter, warmer, and happier every day. Thank you for being you. I love you so much.</p>
+<p>Forever yours,</p>
+<p><strong>Justin 💖</strong></p>
+<button onclick="document.getElementById('love-note').style.display='none'; document.getElementById('letter-block').querySelector('button').style.display='inline-block';" style="margin-top: 15px; padding: 6px 14px; font-size: 14px; background-color: #f06292; color: white; border: none; border-radius: 6px; cursor: pointer;">
+    Close
+  </button>
+</div>
 <div class="footer" style="display:none;">
 <p>Made with love 💗</p>
 </div>
@@ -342,5 +366,6 @@
       }
     }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </body>
 </html>
