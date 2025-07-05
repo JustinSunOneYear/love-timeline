@@ -89,6 +89,68 @@ body {
     background-position: center;
     background-attachment: fixed;
 }
+
+/* Floating heart balloons */
+.heart-balloon {
+    position: fixed;
+    bottom: -100px;
+    width: 50px;
+    height: 50px;
+    background: red;
+    transform: rotate(45deg);
+    animation: floatUp 15s linear forwards;
+    z-index: 1000;
+    cursor: pointer;
+}
+.heart-balloon::before,
+.heart-balloon::after {
+    content: "";
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: red;
+    border-radius: 50%;
+}
+.heart-balloon::before {
+    top: -25px;
+    left: 0;
+}
+.heart-balloon::after {
+    left: -25px;
+    top: 0;
+}
+@keyframes floatUp {
+    0% { bottom: -100px; opacity: 1; }
+    100% { bottom: 110%; opacity: 0; }
+}
+
+/* Popped image effect */
+.popped-image {
+    position: fixed;
+    max-width: 200px;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+.popped-image.show {
+    opacity: 1;
+}
+
+.heart-balloon {
+    left: auto !important;
+    animation: floatSide 15s linear forwards;
+}
+@keyframes floatSide {
+    0% { bottom: -100px; opacity: 1; }
+    100% { bottom: 110%; opacity: 0; }
+}
+.popped-image {
+    left: auto !important;
+    right: 20px;
+}
 </style>
 <style>
 .event {
@@ -444,5 +506,77 @@ function checkPass() {
         alert("Wrong passphrase 💔");
     }
 }
-</script></body>
+</script><script>
+const balloonImages = [
+  "IMG_4591.jpg", "IMG_4761.png", "IMG_4447.PNG"
+];
+let shownImages = [];
+let activeBalloons = 0;
+
+function createBalloon() {
+  if (shownImages.length >= balloonImages.length || activeBalloons >= 3) return;
+
+  const balloon = document.createElement('div');
+  balloon.classList.add('heart-balloon');
+  
+const side = Math.random() < 0.5 ? 'left' : 'right';
+const offset = Math.random() * 10 + 1;
+balloon.style[side] = offset + '%';
+
+  document.body.appendChild(balloon);
+  activeBalloons++;
+
+  balloon.addEventListener('click', () => {
+    const imgIndex = shownImages.length;
+    if (imgIndex >= balloonImages.length) return;
+
+    const img = document.createElement('img');
+    img.src = balloonImages[imgIndex];
+    img.className = 'popped-image show';
+    document.body.appendChild(img);
+
+    setTimeout(() => {
+      img.classList.remove('show');
+      setTimeout(() => img.remove(), 1000);
+    }, 3000);
+
+    shownImages.push(balloonImages[imgIndex]);
+    balloon.remove();
+    activeBalloons--;
+    maybeCreateBalloon();
+
+    if (shownImages.length === balloonImages.length) {
+      document.getElementById("resetBalloonsBtn").style.display = "block";
+    }
+  });
+
+  // Remove balloon after it floats away
+  balloon.addEventListener("animationend", () => {
+    balloon.remove();
+    activeBalloons--;
+    maybeCreateBalloon();
+  });
+}
+
+function maybeCreateBalloon() {
+  if (shownImages.length < balloonImages.length && activeBalloons < 3) {
+    setTimeout(createBalloon, 2000);
+  }
+}
+
+function startBalloons() {
+  for (let i = 0; i < 3; i++) createBalloon();
+}
+
+function resetBalloons() {
+  shownImages = [];
+  activeBalloons = 0;
+  document.getElementById("resetBalloonsBtn").style.display = "none";
+  startBalloons();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  startBalloons();
+});
+</script><button id="resetBalloonsBtn" onclick="resetBalloons()" style="position:fixed; bottom:20px; right:20px; display:none; z-index:9999; padding:10px 15px; font-size:16px; border:none; border-radius:10px; background:#ff4d6d; color:white; cursor:pointer;">🎈 Balloon Pictures</button></body>
 </html>
