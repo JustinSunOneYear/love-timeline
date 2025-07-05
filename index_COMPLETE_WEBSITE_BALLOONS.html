@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Our Love Story</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fff0f5;
+      background-image: url("Lovebackground.avif");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+    .balloon {
+      position: absolute;
+      width: 60px;
+      height: 80px;
+      background-color: pink;
+      border-radius: 50%;
+      animation: floatUp 10s linear infinite;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    .popped-image {
+      position: absolute;
+      max-width: 180px;
+      border-radius: 15px;
+      z-index: 1000;
+      opacity: 1;
+      transition: opacity 2s ease-out;
+    }
+    @keyframes floatUp {
+      from { bottom: -100px; }
+      to { bottom: 120%; }
+    }
+    #regenerateButton {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 10px 15px;
+      font-size: 16px;
+      background-color: deeppink;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 1001;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center; color:deeppink;">Our Love Story</h1>
+
+  <!-- Balloon Regenerate Button -->
+  <button id="regenerateButton" onclick="resetBalloons()">Balloon Pictures</button>
+
+  <!-- JavaScript Logic -->
+  <script>
+    const balloonImages = [
+      "62069a10c6d72e93068bcebecab033a8.JPG",
+      "deb908339ec1a2398d49884c92216164.JPG",
+      "ff560102de2b3674d352debd9ea165f4.JPG",
+      "2f7d82cc05a23bb73c9ff8e46ac3f530.JPG",
+      "b8a67927355000bd6dac0621d8403d22.JPG",
+      "ab7080d284d59986bf2fa8d9a897143f.JPG",
+      "1dca740fc497318d0cce32b23d998c6d.JPG",
+      "4e6ede1763a5befc2d1c57334ed723b6.JPG",
+      "9b000077635ca7f087c4c81258a4a6c7.JPG",
+      "IMG_6435.JPG",
+      "IMG_6617.JPG"
+    ];
+
+    let shownImages = [];
+
+    function spawnBalloon() {
+      if (shownImages.length === balloonImages.length) {
+        document.getElementById('regenerateButton').style.display = 'block';
+        return;
+      }
+
+      if (document.querySelectorAll('.balloon').length >= 3) return;
+
+      const balloon = document.createElement('div');
+      balloon.className = 'balloon';
+
+      // left or right side
+      balloon.style.left = Math.random() < 0.5 
+        ? `${Math.random() * 20}px` 
+        : `${window.innerWidth - 80 - Math.random() * 20}px`;
+
+      balloon.style.bottom = '-100px';
+      document.body.appendChild(balloon);
+
+      balloon.addEventListener('click', () => {
+        const available = balloonImages.filter(img => !shownImages.includes(img));
+        const img = available[Math.floor(Math.random() * available.length)];
+        shownImages.push(img);
+
+        const image = document.createElement('img');
+        image.src = img;
+        image.className = 'popped-image';
+        image.style.left = balloon.style.left;
+        image.style.bottom = balloon.style.bottom;
+
+        document.body.appendChild(image);
+        setTimeout(() => image.style.opacity = 0, 2000);
+        setTimeout(() => image.remove(), 4000);
+
+        balloon.remove();
+      });
+    }
+
+    function resetBalloons() {
+      shownImages = [];
+      document.getElementById('regenerateButton').style.display = 'none';
+    }
+
+    setInterval(spawnBalloon, 2500);
+  </script>
+</body>
+</html>
