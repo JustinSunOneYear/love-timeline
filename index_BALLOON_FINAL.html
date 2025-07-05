@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Our Love Story</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff0f6;
+      background-image: url('Lovebackground.avif');
+      background-size: cover;
+      background-attachment: fixed;
+    }
+    .balloon {
+      width: 60px;
+      height: 80px;
+      background: pink;
+      border-radius: 50% 50% 50% 50%;
+      position: absolute;
+      cursor: pointer;
+      animation: floatUp 12s linear infinite;
+      box-shadow: 0 0 10px rgba(255, 105, 180, 0.4);
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(100vh); }
+      100% { transform: translateY(-150px); }
+    }
+    .balloon img {
+      max-width: 200px;
+      position: absolute;
+      left: 80px;
+      top: -40px;
+      display: none;
+      opacity: 1;
+      transition: opacity 1.5s ease-out;
+    }
+    .fade-out {
+      opacity: 0 !important;
+    }
+    #regenerateBtn {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 20px;
+      background-color: hotpink;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<script>
+  const imageFilenames = [
+    "IMG_7105.PNG", "IMG_8363.HEIC", "ed59dc592da117f831403b410e183497.JPG", 
+    "IMG_8276.heic", "IMG_8198.heic", "IMG_8151.jpg", "27554d5862bbb16b361433db650e8061.JPG", 
+    "IMG_7842.JPG", "8561cd6fc847876311783f98fa67c125.JPG", "ad5aa27cc31fd28545b968551357b810.JPG",
+    "IMG_3242.PNG", "IMG_3117.heic", "IMG_1569.HEIC", "13263c93c2ef136356996098d29b0b63.JPG",
+    "IMG_0873.HEIC", "5c4948a888c791658bac9c617dab93da.JPG", "e3c80993f7cc3a35a3dc01ba287bd5f0.JPG", 
+    "208244d1773bfb3d066bf296abd0a60d.JPG", "fc08aecd948113e392eacf54cf78115a.JPG", 
+    "c3ce568be92dfa5144b08edf0ffa2f15.JPG", "4FD5EBC7-869E-45DD-8E52-DAE27F6FC4EF.JPG",
+    "IMG_5441.PNG", "13388520dee803b39b86beb211e29a59.JPG", "IMG_4649.HEIC", 
+    "89699ea442166c1a0312dd16ab9751ac.JPG", "ac97f543b2160917a598378c194e63c6.JPG", 
+    "f14a95bdf694f1e287b7f74c0036c100 3.JPG", "IMG_4269.PNG", "IMG_4249.HEIC", 
+    "6030a3947205de37b3c9048db316d5fa.JPG", "62069a10c6d72e93068bcebecab033a8.JPG", 
+    "deb908339ec1a2398d49884c92216164.JPG", "ff560102de2b3674d352debd9ea165f4.JPG", 
+    "2f7d82cc05a23bb73c9ff8e46ac3f530.JPG", "b8a67927355000bd6dac0621d8403d22.JPG", 
+    "ab7080d284d59986bf2fa8d9a897143f.JPG", "1dca740fc497318d0cce32b23d998c6d.JPG", 
+    "4e6ede1763a5befc2d1c57334ed723b6.JPG", "9b000077635ca7f087c4c81258a4a6c7.JPG", 
+    "IMG_6435.JPG", "IMG_6515.HEIC", "IMG_5947.HEIC", "IMG_5541.HEIC", 
+    "IMG_5264.HEIC", "IMG_4165.HEIC", "IMG_3113.HEIC", "IMG_6617.JPG"
+  ];
+
+  let shownImages = [];
+  let maxBalloons = 3;
+
+  function spawnBalloon() {
+    if (shownImages.length >= imageFilenames.length) {
+      document.getElementById("regenerateBtn").style.display = "block";
+      return;
+    }
+    if (document.querySelectorAll('.balloon').length >= maxBalloons) return;
+
+    const balloon = document.createElement('div');
+    balloon.className = 'balloon';
+    balloon.style.left = Math.random() < 0.5 ? '5%' : '90%';
+
+    const img = document.createElement('img');
+    let nextImage = imageFilenames.find(img => !shownImages.includes(img));
+    if (!nextImage) return;
+    img.src = nextImage;
+    shownImages.push(nextImage);
+    balloon.appendChild(img);
+
+    balloon.onclick = () => {
+      img.style.display = 'block';
+      setTimeout(() => img.classList.add('fade-out'), 2000);
+      setTimeout(() => balloon.remove(), 4000);
+    };
+
+    document.body.appendChild(balloon);
+  }
+
+  function generateBalloons() {
+    shownImages = [];
+    document.querySelectorAll('.balloon').forEach(el => el.remove());
+    document.getElementById("regenerateBtn").style.display = "none";
+    setInterval(spawnBalloon, 3000);
+  }
+
+  window.onload = () => generateBalloons();
+</script>
+
+<button id="regenerateBtn" onclick="generateBalloons()">Balloon Pictures</button>
+</body>
+</html>
